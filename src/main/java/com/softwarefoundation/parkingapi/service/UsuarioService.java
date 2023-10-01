@@ -22,4 +22,11 @@ public class UsuarioService extends AbstractService {
     public Usuario buscarPorId(Long id) {
         return this.iUsuarioRepository.findById(id).orElseThrow(() -> new UsuarioNaoEncontrado());
     }
+
+    @Transactional
+    public Usuario editarSenha(Long id, String password) {
+        Usuario usuario = this.buscarPorId(id);
+        usuario.setPassword(password);
+        return usuario;
+    }
 }
