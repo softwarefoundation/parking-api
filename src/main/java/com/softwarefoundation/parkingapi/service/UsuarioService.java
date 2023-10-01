@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class UsuarioService extends AbstractService {
@@ -28,5 +30,10 @@ public class UsuarioService extends AbstractService {
         Usuario usuario = this.buscarPorId(id);
         usuario.setPassword(password);
         return usuario;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Usuario> buscarTodos() {
+        return this.iUsuarioRepository.findAll();
     }
 }

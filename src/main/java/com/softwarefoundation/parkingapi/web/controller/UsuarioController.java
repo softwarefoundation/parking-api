@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/usuarios")
@@ -36,6 +38,12 @@ public class UsuarioController extends AbstractController {
     public ResponseEntity<Usuario> upatePassword(@PathVariable Long id, @RequestBody Usuario usuario) {
         Usuario usuarioResponse = this.usuarioService.editarSenha(id, usuario.getPassword());
         return ResponseEntity.status(HttpStatus.OK).body(usuarioResponse);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Usuario>> buscarTodos() {
+        List<Usuario> usuariosResponse = this.usuarioService.buscarTodos();
+        return ResponseEntity.status(HttpStatus.OK).body(usuariosResponse);
     }
 
 
