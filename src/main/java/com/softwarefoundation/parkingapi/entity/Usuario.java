@@ -33,7 +33,7 @@ public class Usuario extends AbstractEntity {
     private String password;
     @Enumerated(EnumType.STRING)
     @Column(name = "ROLE", length = 25)
-    private Role role;
+    private Role role = Role.ROLE_CLIENTE;
     @Column(name = "DT_CRIACAO")
     private LocalDateTime dataCriacao;
     @Column(name = "DT_MODIFICACAO")

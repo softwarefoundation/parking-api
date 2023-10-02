@@ -1,6 +1,9 @@
 package com.softwarefoundation.parkingapi.web.controller;
 
 import com.softwarefoundation.parkingapi.entity.Usuario;
+import com.softwarefoundation.parkingapi.entity.dto.UsuarioCreateDto;
+import com.softwarefoundation.parkingapi.entity.dto.UsuarioResponseDto;
+import com.softwarefoundation.parkingapi.entity.dto.mapper.UsuarioMapper;
 import com.softwarefoundation.parkingapi.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,13 +26,13 @@ public class UsuarioController extends AbstractController {
     private final UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) {
-        Usuario usuarioResponse = this.usuarioService.salvar(usuario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioResponse);
+    public ResponseEntity<UsuarioResponseDto> create(@RequestBody UsuarioCreateDto usuarioCreateDto) {
+        Usuario usuarioResponse = this.usuarioService.salvar(UsuarioMapper.toUsuario(usuarioCreateDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioMapper.toUsuario(usuarioResponse));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> create(@PathVariable Long id) {
+    public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {
         Usuario usuarioResponse = this.usuarioService.buscarPorId(id);
         return ResponseEntity.status(HttpStatus.OK).body(usuarioResponse);
     }
