@@ -32,9 +32,9 @@ public class UsuarioController extends AbstractController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<UsuarioResponseDto> buscarPorId(@PathVariable Long id) {
         Usuario usuarioResponse = this.usuarioService.buscarPorId(id);
-        return ResponseEntity.status(HttpStatus.OK).body(usuarioResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(UsuarioMapper.toUsuario(usuarioResponse));
     }
 
     @PatchMapping("/{id}")
