@@ -6,6 +6,7 @@ import com.softwarefoundation.parkingapi.entity.dto.UsuarioResponseDto;
 import com.softwarefoundation.parkingapi.entity.dto.UsuarioSenhaDto;
 import com.softwarefoundation.parkingapi.entity.dto.mapper.UsuarioMapper;
 import com.softwarefoundation.parkingapi.service.UsuarioService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
+@Tag(name = "Usuarios", description = "Contém todas as operações de usuários")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/usuarios")
