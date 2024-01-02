@@ -1,5 +1,6 @@
 package com.softwarefoundation.parkingapi.web.exception;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ public class ErrorMessage {
     private int status;
     private String statusText;
     private String message;
-
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Map<String, String> errors;
 
     public ErrorMessage() {
