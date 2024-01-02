@@ -3,6 +3,7 @@ package com.softwarefoundation.parkingapi.web.controller;
 import com.softwarefoundation.parkingapi.entity.Usuario;
 import com.softwarefoundation.parkingapi.entity.dto.UsuarioCreateDto;
 import com.softwarefoundation.parkingapi.entity.dto.UsuarioResponseDto;
+import com.softwarefoundation.parkingapi.entity.dto.UsuarioSenhaDto;
 import com.softwarefoundation.parkingapi.entity.dto.mapper.UsuarioMapper;
 import com.softwarefoundation.parkingapi.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
@@ -28,19 +29,19 @@ public class UsuarioController extends AbstractController {
     @PostMapping
     public ResponseEntity<UsuarioResponseDto> create(@RequestBody UsuarioCreateDto usuarioCreateDto) {
         Usuario usuarioResponse = this.usuarioService.salvar(UsuarioMapper.toUsuario(usuarioCreateDto));
-        return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioMapper.toUsuario(usuarioResponse));
+        return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioMapper.toDto(usuarioResponse));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioResponseDto> buscarPorId(@PathVariable Long id) {
         Usuario usuarioResponse = this.usuarioService.buscarPorId(id);
-        return ResponseEntity.status(HttpStatus.OK).body(UsuarioMapper.toUsuario(usuarioResponse));
+        return ResponseEntity.status(HttpStatus.OK).body(UsuarioMapper.toDto(usuarioResponse));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Usuario> upatePassword(@PathVariable Long id, @RequestBody Usuario usuario) {
-        Usuario usuarioResponse = this.usuarioService.editarSenha(id, usuario.getPassword());
-        return ResponseEntity.status(HttpStatus.OK).body(usuarioResponse);
+    public ResponseEntity<Void> upatePassword(@PathVariable Long id, @RequestBody UsuarioSenhaDto usuario) {
+        this.usuarioService.editarSenha(id, usuario.getSenhaAtual(), usuario.getNovaSenha(), usuario.getConfirmaSenha());
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping
