@@ -6,6 +6,7 @@ import com.softwarefoundation.parkingapi.entity.dto.UsuarioResponseDto;
 import com.softwarefoundation.parkingapi.entity.dto.UsuarioSenhaDto;
 import com.softwarefoundation.parkingapi.entity.dto.mapper.UsuarioMapper;
 import com.softwarefoundation.parkingapi.service.UsuarioService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class UsuarioController extends AbstractController {
     private final UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<UsuarioResponseDto> create(@RequestBody UsuarioCreateDto usuarioCreateDto) {
+    public ResponseEntity<UsuarioResponseDto> create(@Valid @RequestBody UsuarioCreateDto usuarioCreateDto) {
         Usuario usuarioResponse = this.usuarioService.salvar(UsuarioMapper.toUsuario(usuarioCreateDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioMapper.toDto(usuarioResponse));
     }
