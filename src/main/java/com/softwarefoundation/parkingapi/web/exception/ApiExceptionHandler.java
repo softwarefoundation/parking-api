@@ -1,5 +1,6 @@
 package com.softwarefoundation.parkingapi.web.exception;
 
+import com.softwarefoundation.parkingapi.exceptions.UserEntityNotFoundException;
 import com.softwarefoundation.parkingapi.exceptions.UsernameUniqueViolationException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,14 @@ public class ApiExceptionHandler {
         log.error("usernameUniqueViolationException: ", exception);
         return ResponseEntity.status(HttpStatus.CONFLICT).contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request, HttpStatus.CONFLICT, exception.getMessage()));
+
+    }
+
+    @ExceptionHandler(UserEntityNotFoundException.class)
+    public ResponseEntity<ErrorMessage> userEntityNotFoundException(UserEntityNotFoundException exception, HttpServletRequest request) {
+        log.error("userEntityNotFoundException: ", exception);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.NOT_FOUND, exception.getMessage()));
 
     }
 

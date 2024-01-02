@@ -2,7 +2,7 @@ package com.softwarefoundation.parkingapi.service;
 
 import com.softwarefoundation.parkingapi.entity.Usuario;
 import com.softwarefoundation.parkingapi.exceptions.UsernameUniqueViolationException;
-import com.softwarefoundation.parkingapi.exceptions.UsuarioNaoEncontrado;
+import com.softwarefoundation.parkingapi.exceptions.UserEntityNotFoundException;
 import com.softwarefoundation.parkingapi.repository.IUsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -28,7 +28,7 @@ public class UsuarioService extends AbstractService {
 
     @Transactional(readOnly = true)
     public Usuario buscarPorId(Long id) {
-        return this.iUsuarioRepository.findById(id).orElseThrow(() -> new UsuarioNaoEncontrado());
+        return this.iUsuarioRepository.findById(id).orElseThrow(() -> new UserEntityNotFoundException(String.format("Usuário id=%s não encontrado", id)));
     }
 
     @Transactional
