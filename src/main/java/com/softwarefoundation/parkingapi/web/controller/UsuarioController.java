@@ -45,9 +45,9 @@ public class UsuarioController extends AbstractController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Usuario>> buscarTodos() {
+    public ResponseEntity<List<UsuarioResponseDto>> buscarTodos() {
         List<Usuario> usuariosResponse = this.usuarioService.buscarTodos();
-        return ResponseEntity.status(HttpStatus.OK).body(usuariosResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(UsuarioMapper.toLisDto(usuariosResponse));
     }
 
 

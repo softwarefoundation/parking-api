@@ -6,6 +6,10 @@ import com.softwarefoundation.parkingapi.entity.dto.UsuarioResponseDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class UsuarioMapper {
 
     public static Usuario toUsuario(UsuarioCreateDto usuarioCreateDto) {
@@ -23,6 +27,11 @@ public class UsuarioMapper {
         ModelMapper mapper = new ModelMapper();
         mapper.addMappings(props);
         return mapper.map(usuario, UsuarioResponseDto.class);
+    }
+
+
+    public static List<UsuarioResponseDto> toLisDto(List<Usuario> usuarios) {
+        return usuarios.stream().map(UsuarioMapper::toDto).collect(Collectors.toList());
     }
 
 }
