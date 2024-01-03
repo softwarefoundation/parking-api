@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+
 @Tag(name = "Usuarios", description = "Contém todas as operações de usuários")
 @RequiredArgsConstructor
 @RestController
@@ -41,7 +42,7 @@ public class UsuarioController extends AbstractController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> upatePassword(@PathVariable Long id, @RequestBody UsuarioSenhaDto usuario) {
+    public ResponseEntity<Void> upatePassword(@PathVariable Long id, @Valid @RequestBody UsuarioSenhaDto usuario) {
         this.usuarioService.editarSenha(id, usuario.getSenhaAtual(), usuario.getNovaSenha(), usuario.getConfirmaSenha());
         return ResponseEntity.noContent().build();
     }

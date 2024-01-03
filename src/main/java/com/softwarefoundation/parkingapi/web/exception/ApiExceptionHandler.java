@@ -1,5 +1,6 @@
 package com.softwarefoundation.parkingapi.web.exception;
 
+import com.softwarefoundation.parkingapi.exceptions.NegocioException;
 import com.softwarefoundation.parkingapi.exceptions.UserEntityNotFoundException;
 import com.softwarefoundation.parkingapi.exceptions.UsernameUniqueViolationException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,6 +40,15 @@ public class ApiExceptionHandler {
                 .body(new ErrorMessage(request, HttpStatus.NOT_FOUND, exception.getMessage()));
 
     }
+
+    @ExceptionHandler(NegocioException.class)
+    public ResponseEntity<ErrorMessage> negocioException(NegocioException exception, HttpServletRequest request) {
+        log.error("negocioException: ", exception);
+        return ResponseEntity.status(exception.getHttpStatus()).contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, exception.getHttpStatus(), exception.getMessage()));
+
+    }
+
 
 
 }

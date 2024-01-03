@@ -1,11 +1,13 @@
 package com.softwarefoundation.parkingapi.service;
 
 import com.softwarefoundation.parkingapi.entity.Usuario;
+import com.softwarefoundation.parkingapi.exceptions.NegocioException;
 import com.softwarefoundation.parkingapi.exceptions.UsernameUniqueViolationException;
 import com.softwarefoundation.parkingapi.exceptions.UserEntityNotFoundException;
 import com.softwarefoundation.parkingapi.repository.IUsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,11 +36,11 @@ public class UsuarioService extends AbstractService {
     @Transactional
     public Usuario editarSenha(Long id, String senhaAtual, String novaSenha, String confirmaSenha) {
         if (!novaSenha.equals(confirmaSenha)) {
-            throw new RuntimeException("Nova senha não confere com confirmação de senha");
+            throw new NegocioException("Nova senha não confere com confirmação de senha", HttpStatus.BAD_REQUEST);
         }
         Usuario usuario = this.buscarPorId(id);
         if (!usuario.getPassword().equals(senhaAtual)) {
-            throw new RuntimeException("Sua senha não confere");
+            throw new NegocioException("Sua senha não confere", HttpStatus.BAD_REQUEST);
         }
         usuario.setPassword(novaSenha);
         return usuario;

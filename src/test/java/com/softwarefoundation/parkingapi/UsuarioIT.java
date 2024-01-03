@@ -2,6 +2,7 @@ package com.softwarefoundation.parkingapi;
 
 import com.softwarefoundation.parkingapi.entity.dto.UsuarioCreateDto;
 import com.softwarefoundation.parkingapi.entity.dto.UsuarioResponseDto;
+import com.softwarefoundation.parkingapi.entity.dto.UsuarioSenhaDto;
 import com.softwarefoundation.parkingapi.web.exception.ErrorMessage;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -141,5 +142,38 @@ public class UsuarioIT {
         Assertions.assertThat(responseBody.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
     }
 
+
+    @Test
+    public void editarSenhaSucesso() {
+        this.testClient
+                .patch()
+                .uri("/api/v1/usuarios/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new UsuarioSenhaDto("123456", "222888", "222888"))
+                .exchange()
+                .expectStatus().isNoContent();
+    }
+
+    @Test
+    public void editarSenhaErro404() {
+        this.testClient
+                .patch()
+                .uri("/api/v1/usuarios/0")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new UsuarioSenhaDto("123456", "222888", "222888"))
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
+    public void editarSenhaErro422() {
+        this.testClient
+                .patch()
+                .uri("/api/v1/usuarios/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new UsuarioSenhaDto("", "", ""))
+                .exchange()
+                .expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY.value());
+    }
 
 }
