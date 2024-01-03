@@ -95,4 +95,21 @@ public class UsuarioIT {
         Assertions.assertThat(responseBody.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY.value());
     }
 
+    @Test
+    public void createUsuarioComUsernameRepetidoRetornarErrorMessageComStatus422() {
+        ErrorMessage responseBody = this.testClient
+                .post()
+                .uri("/api/v1/usuarios")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new UsuarioCreateDto("ana@gmail.com", "123456"))
+                .exchange()
+                .expectStatus().isEqualTo(HttpStatus.CONFLICT.value())
+                .expectBody(ErrorMessage.class)
+                .returnResult().getResponseBody();
+
+        Assertions.assertThat(responseBody).isNotNull();
+        Assertions.assertThat(responseBody.getStatus()).isEqualTo(HttpStatus.CONFLICT.value());
+
+    }
+
 }
