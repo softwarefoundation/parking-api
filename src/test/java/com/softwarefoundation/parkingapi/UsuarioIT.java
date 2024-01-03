@@ -112,4 +112,34 @@ public class UsuarioIT {
 
     }
 
+    @Test
+    public void buscarUsuarioComIdExistenteRetornarUsuarioComStatus200() {
+        UsuarioResponseDto responseBody = this.testClient
+                .get()
+                .uri("/api/v1/usuarios/1")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(UsuarioResponseDto.class)
+                .returnResult().getResponseBody();
+
+        Assertions.assertThat(responseBody).isNotNull();
+        Assertions.assertThat(responseBody.getId()).isNotNull();
+        Assertions.assertThat(responseBody.getUsername()).isEqualTo("ana@gmail.com");
+    }
+
+    @Test
+    public void buscarUsuarioComIdInexistenteRetornarUsuarioComStatus404() {
+        ErrorMessage responseBody = this.testClient
+                .get()
+                .uri("/api/v1/usuarios/1001")
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(ErrorMessage.class)
+                .returnResult().getResponseBody();
+
+        Assertions.assertThat(responseBody).isNotNull();
+        Assertions.assertThat(responseBody.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+    }
+
+
 }
