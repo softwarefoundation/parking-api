@@ -32,7 +32,7 @@ public class SpringSecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         authorize -> authorize.requestMatchers(
-                                        antMatcher(HttpMethod.POST, "api/v1/usuarios"),
+                                        antMatcher(HttpMethod.POST, "/api/v1/usuarios"),
                                         antMatcher("/h2-console/**"))
                                 .permitAll()
                                 .anyRequest().authenticated()
