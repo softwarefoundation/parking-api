@@ -1,6 +1,7 @@
 package com.softwarefoundation.parkingapi.service;
 
 import com.softwarefoundation.parkingapi.entity.Usuario;
+import com.softwarefoundation.parkingapi.enums.Role;
 import com.softwarefoundation.parkingapi.exceptions.NegocioException;
 import com.softwarefoundation.parkingapi.exceptions.UsernameUniqueViolationException;
 import com.softwarefoundation.parkingapi.exceptions.UserEntityNotFoundException;
@@ -8,6 +9,7 @@ import com.softwarefoundation.parkingapi.repository.IUsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,5 +51,13 @@ public class UsuarioService extends AbstractService {
     @Transactional(readOnly = true)
     public List<Usuario> buscarTodos() {
         return this.iUsuarioRepository.findAll();
+    }
+
+    public Usuario loadUserByUsername(final String username) {
+        return this.iUsuarioRepository.findByUsername(username).orElseThrow(() -> new UserEntityNotFoundException(String.format("Usuário username=%s não encontrado", username)));
+    }
+
+    public Role findRoleByUsername(final String username) {
+        return this.iUsuarioRepository.findRoleByUsername(username);
     }
 }
