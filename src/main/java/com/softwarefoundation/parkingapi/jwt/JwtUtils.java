@@ -37,25 +37,9 @@ public class JwtUtils {
         return Date.from(exp.atZone(ZoneId.systemDefault()).toInstant());
     }
 
-    public static JwtToken createToken(String username, String role) {
-        Date iat = new Date();
-        Date exp = toExpireDate(iat);
-
-        String token = Jwts.builder().header()
-                .add("typ", "JWT")
-                .add("alg", "HS256").and()
-                .claim("sub", username)
-                .claim("iat", iat)
-                .claim("exp", exp)
-                .signWith(generatePrivateKey()).compact();
-        return new JwtToken(token);
-    }
-
     public static JwtToken createTokenImplV2(String username, String role) {
         Date iat = new Date();
         Date exp = toExpireDate(iat);
-        SecretKey key = Jwts.SIG.HS256.key().build();
-
 
         String jwts = Jwts.builder()
                 .header()
@@ -63,10 +47,10 @@ public class JwtUtils {
                 .add("alg", "HS256")
                 .and()
                 .issuer("parking-api")
-                .subject(username)
-                .expiration(exp)
-                .notBefore(iat)
                 .issuedAt(iat)
+                .notBefore(iat)
+                .expiration(exp)
+                .subject(username)
                 .claim("role", role)
                 .signWith(generatePrivateKey()).compact();
         return new JwtToken(jwts);
