@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,10 +21,12 @@ import java.util.List;
 public class UsuarioService extends AbstractService {
 
     private final IUsuarioRepository iUsuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Usuario salvar(Usuario usuario) {
         try {
+            usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
             return iUsuarioRepository.save(usuario);
         } catch (DataIntegrityViolationException e) {
             throw new UsernameUniqueViolationException(String.format("Username {%s} já cadastrado", usuario.getUsername()));
@@ -41,10 +44,10 @@ public class UsuarioService extends AbstractService {
             throw new NegocioException("Nova senha não confere com confirmação de senha", HttpStatus.BAD_REQUEST);
         }
         Usuario usuario = this.buscarPorId(id);
-        if (!usuario.getPassword().equals(senhaAtual)) {
+        if (!passwordEncoder.matches(senhaAtual, usuario.getPassword())){
             throw new NegocioException("Sua senha não confere", HttpStatus.BAD_REQUEST);
         }
-        usuario.setPassword(novaSenha);
+        usuario.setPassword(passwordEncoder.encode(novaSenha));
         return usuario;
     }
 

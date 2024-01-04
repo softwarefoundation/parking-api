@@ -1,5 +1,6 @@
 package com.softwarefoundation.parkingapi.config;
 
+import com.softwarefoundation.parkingapi.jwt.JwtAuthorizationFilter;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
@@ -33,12 +35,19 @@ public class SpringSecurityConfig {
                 .authorizeHttpRequests(
                         authorize -> authorize.requestMatchers(
                                         antMatcher(HttpMethod.POST, "/api/v1/usuarios"),
+                                        antMatcher(HttpMethod.POST, "/api/v1/auth"),
                                         antMatcher("/h2-console/**"))
                                 .permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+
+    @Bean
+    public JwtAuthorizationFilter jwtAuthorizationFilter() {
+        return new JwtAuthorizationFilter();
     }
 
     @Bean
