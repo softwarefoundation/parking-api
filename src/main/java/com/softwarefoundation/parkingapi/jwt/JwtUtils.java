@@ -17,8 +17,8 @@ import java.util.Objects;
 @Slf4j
 public class JwtUtils {
 
-    private static final String JWT_BEARER = "Bearer ";
-    private static final String JWT_AUTHORIZATION = "Authorization";
+    public static final String JWT_BEARER = "Bearer ";
+    public static final String JWT_AUTHORIZATION = "Authorization";
     private static final String SECRET_KEYS = "3613d057-3a6d-4db0-83f3-f8bdb072f788";
     private static final long EXPIRE_DAYS = 0;
     private static final long EXPIRE_HOURS = 0;
